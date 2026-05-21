@@ -1,23 +1,24 @@
-"""
-Product model definition for the OpenShop RESTful API.
-"""
-
+import uuid
 from django.db import models
 
 
 class Product(models.Model):
-    """Represents a product in the shop."""
-
-    name = models.CharField(max_length=100)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+    sku = models.CharField(max_length=100)
     description = models.TextField()
-    price = models.DecimalField(max_digits=12, decimal_places=2)
-    stock = models.PositiveIntegerField()
+    shop = models.CharField(max_length=255)
+    location = models.CharField(max_length=255)
+    price = models.IntegerField()
+    discount = models.IntegerField(default=0)
     category = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    stock = models.IntegerField()
+    is_available = models.BooleanField(default=True)
+    is_delete = models.BooleanField(default=False)
+    picture = models.CharField(max_length=500)
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['-id']
 
     def __str__(self):
         return self.name

@@ -1,29 +1,58 @@
-"""
-Views for the products app.
-Uses ModelViewSet to provide full CRUD operations and search functionality.
-"""
-
-from rest_framework import viewsets, filters
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 from .models import Product
 from .serializers import ProductSerializer
 
 
-class ProductViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet for Product model providing:
-    - list:   GET  /api/products/
-    - create: POST /api/products/
-    - retrieve: GET /api/products/<id>/
-    - update: PUT /api/products/<id>/
-    - partial_update: PATCH /api/products/<id>/
-    - destroy: DELETE /api/products/<id>/
+class ProductListCreateView(APIView):
+    def get(self, request):
+        products = Product.objects.all()
+        name = request.query_params.get('name')
+        location = request.query_params.get('location')
+        if name:
+            products = products.filter(name__icontains=name)
+        if location:
+            products = products.filter(location__icontains=location)
+        serializer = ProductSerializer(products, many=True, context={'request': request})
+        return Response({'products': serializer.data})
 
-    Search by name, category, or description:
-    - GET /api/products/?search=keyword
-    """
+    def post(self, request):
+        serializer = ProductSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    queryset = Product.objects.all().order_by('-created_at')
-    serializer_class = ProductSerializer
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['name', 'category', 'description']
-    ordering_fields = ['name', 'price', 'stock', 'created_at']
+
+class ProductDetailView(APIView):
+    def _get_object(self, pk):
+        try:
+            return Product.objects.get(pk=pk)
+        except Product.DoesNotExist:
+            return None
+
+    def get(self, request, pk):
+        product = self._get_object(pk)
+        if product is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = ProductSerializer(product, context={'request': request})
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        product = self._get_object(pk)
+        if product is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = ProductSerializer(product, data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        product = self._get_object(pk)
+        if product is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        product.is_delete = True
+        product.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)

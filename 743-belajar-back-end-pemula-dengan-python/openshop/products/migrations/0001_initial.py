@@ -1,5 +1,4 @@
-"""Initial migration: creates the Product table."""
-
+import uuid
 from django.db import migrations, models
 
 
@@ -13,17 +12,22 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Product',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
+                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ('name', models.CharField(max_length=255)),
+                ('sku', models.CharField(max_length=100)),
                 ('description', models.TextField()),
-                ('price', models.DecimalField(decimal_places=2, max_digits=12)),
-                ('stock', models.PositiveIntegerField()),
+                ('shop', models.CharField(max_length=255)),
+                ('location', models.CharField(max_length=255)),
+                ('price', models.IntegerField()),
+                ('discount', models.IntegerField(default=0)),
                 ('category', models.CharField(max_length=100)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('stock', models.IntegerField()),
+                ('is_available', models.BooleanField(default=True)),
+                ('is_delete', models.BooleanField(default=False)),
+                ('picture', models.CharField(max_length=500)),
             ],
             options={
-                'ordering': ['-created_at'],
+                'ordering': ['-id'],
             },
         ),
     ]

@@ -1,43 +1,48 @@
-"""
-Serializers for the products app.
-Handles validation and serialization of Product data.
-"""
-
 from rest_framework import serializers
 from .models import Product
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    """Serializer for the Product model with field-level validation."""
+    _links = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
         fields = [
-            'id',
-            'name',
-            'description',
-            'price',
-            'stock',
-            'category',
-            'created_at',
-            'updated_at',
+            'id', 'name', 'sku', 'description', 'shop', 'location',
+            'price', 'discount', 'category', 'stock', 'is_available',
+            'is_delete', 'picture', '_links',
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at']
+        read_only_fields = ['id', '_links']
+        extra_kwargs = {
+            'is_delete': {'required': False},
+        }
 
-    def validate_name(self, value):
-        """Name must not be empty or whitespace only."""
-        if not value or not value.strip():
-            raise serializers.ValidationError("Name cannot be empty.")
-        return value.strip()
-
-    def validate_price(self, value):
-        """Price must not be negative."""
-        if value < 0:
-            raise serializers.ValidationError("Price cannot be negative.")
-        return value
-
-    def validate_stock(self, value):
-        """Stock must not be negative."""
-        if value < 0:
-            raise serializers.ValidationError("Stock cannot be negative.")
-        return value
+    def get__links(self, obj):
+        request = self.context.get('request')
+        base = f"{request.scheme}://{request.get_host()}" if request else ""
+        return [
+            {
+                "rel": "self",
+                "href": f"{base}/products",
+                "action": "POST",
+                "types": ["application/json"],
+            },
+            {
+                "rel": "self",
+                "href": f"{base}/products/{obj.id}/",
+                "action": "GET",
+                "types": ["application/json"],
+            },
+            {
+                "rel": "self",
+                "href": f"{base}/products/{obj.id}/",
+                "action": "PUT",
+                "types": ["application/json"],
+            },
+            {
+                "rel": "self",
+                "href": f"{base}/products/{obj.id}/",
+                "action": "DELETE",
+                "types": ["application/json"],
+            },
+        ]
