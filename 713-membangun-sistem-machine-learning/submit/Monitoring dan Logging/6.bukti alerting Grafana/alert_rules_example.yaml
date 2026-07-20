@@ -1,0 +1,87 @@
+# Contoh Grafana Alerting provisioning (opsional, bisa juga dibuat manual lewat UI:
+# Alerting > Alert rules > New alert rule).
+#
+# Import lewat: Grafana > Alerting > Alert rules > Import, atau letakkan file ini di
+# folder provisioning Grafana (/etc/grafana/provisioning/alerting/).
+#
+# 3 alert berikut memenuhi kriteria Advance (min. 3 alerting):
+#   1. HighPredictionLatency  - laten p95 > 1 detik
+#   2. LowModelAccuracy       - akurasi model turun di bawah 0.85
+#   3. HighErrorRate          - error prediksi lebih dari 5 dalam 5 menit
+
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: msml-iris-alerts
+    folder: MSML Alerts
+    interval: 1m
+    rules:
+      - uid: high-latency-alert
+        title: HighPredictionLatency
+        condition: C
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            model:
+              expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))
+          - refId: C
+            datasourceUid: "__expr__"
+            model:
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator:
+                    type: gt
+                    params: [1]
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Latensi prediksi model P95 > 1 detik"
+
+      - uid: low-accuracy-alert
+        title: LowModelAccuracy
+        condition: C
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            model:
+              expr: model_accuracy
+          - refId: C
+            datasourceUid: "__expr__"
+            model:
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator:
+                    type: lt
+                    params: [0.85]
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Akurasi model di bawah 0.85"
+
+      - uid: high-error-rate-alert
+        title: HighErrorRate
+        condition: C
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            model:
+              expr: increase(prediction_errors_total[5m])
+          - refId: C
+            datasourceUid: "__expr__"
+            model:
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator:
+                    type: gt
+                    params: [5]
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Lebih dari 5 error prediksi dalam 5 menit terakhir"

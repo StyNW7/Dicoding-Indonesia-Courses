@@ -1,0 +1,7 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+dataset/knowledge_rag/*.pdf
+chroma_legal_db*/
+outputs/

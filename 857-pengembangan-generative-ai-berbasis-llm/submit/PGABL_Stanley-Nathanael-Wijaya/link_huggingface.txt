@@ -1,0 +1,6 @@
+TODO: link ini terisi otomatis (append) oleh notebook Fine-tuning dan GRPO setelah
+model berhasil di-push (lihat sel terakhir masing-masing notebook). Pastikan kedua
+repository Hugging Face berikut diatur Public sebelum submit.
+
+Fine-tuned model: https://huggingface.co/<username>/qwen2.5-1.5b-legal-chatbot-id
+GRPO model (opsional/advanced): https://huggingface.co/<username>/qwen2.5-1.5b-legal-chatbot-id-grpo

@@ -1,0 +1,13 @@
+TODO (opsional - hanya untuk kriteria Advance):
+
+1. Buat repository baru di https://dagshub.com (mis. nama: msml-iris-stanley).
+2. Jalankan `dagshub login` atau set token DagsHub Anda.
+3. Jalankan modelling_tuning.py dengan environment variable berikut agar
+   tracking dikirim online ke DagsHub, bukan ke localhost:
+
+   set DAGSHUB_REPO_OWNER=<username_dagshub_anda>
+   set DAGSHUB_REPO_NAME=<nama_repo_dagshub_anda>
+   python modelling_tuning.py
+
+4. Setelah run berhasil, tempel tautan Experiment DagsHub Anda di sini, contoh:
+   https://dagshub.com/<username>/<repo>/experiments

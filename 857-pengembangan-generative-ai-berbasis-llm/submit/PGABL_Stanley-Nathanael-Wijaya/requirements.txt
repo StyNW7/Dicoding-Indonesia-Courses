@@ -1,0 +1,28 @@
+# Fine-tuning / GRPO
+torch
+unsloth @ git+https://github.com/unslothai/unsloth.git
+trl
+peft
+accelerate
+bitsandbytes
+xformers
+datasets
+wandb
+rouge-score
+
+# RAG
+langchain
+langchain-community
+langchain-huggingface
+chromadb
+pypdf
+sentence-transformers
+rank_bm25
+gradio
+duckduckgo-search
+gdown
+
+# Umum
+huggingface_hub
+matplotlib
+numpy
