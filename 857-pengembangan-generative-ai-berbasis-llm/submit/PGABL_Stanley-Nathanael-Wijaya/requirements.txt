@@ -10,11 +10,12 @@ datasets
 wandb
 rouge-score
 
-# RAG
-langchain
-langchain-community
-langchain-huggingface
-chromadb
+# RAG (versi di-pin: langchain 1.x merestrukturisasi EnsembleRetriever/ParentDocumentRetriever/InMemoryStore)
+langchain==0.3.7
+langchain-community==0.3.7
+langchain-huggingface==0.1.2
+langchain-text-splitters==0.3.2
+chromadb==0.5.20
 pypdf
 sentence-transformers
 rank_bm25
