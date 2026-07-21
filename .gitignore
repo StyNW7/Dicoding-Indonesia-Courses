@@ -4,3 +4,5 @@ venv/
 project-criterias/
 *.mp4
 *node_modules/
+archieved/
+archieved-document/
