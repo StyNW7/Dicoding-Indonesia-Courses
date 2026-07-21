@@ -1,1 +1,3 @@
-APP_URL=
+APP_URL=https://882-dicoding.vercel.app
+
+Saya tidak menggunakan Netlify, karena beberapa faktor, jadi saya deploy di Vercel saja.
