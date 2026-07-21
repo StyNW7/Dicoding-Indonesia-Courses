@@ -2,3 +2,4 @@ tasks/
 .claude/
 venv/
 project-criterias/
+*.mp4
