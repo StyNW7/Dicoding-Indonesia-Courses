@@ -1,0 +1,5 @@
+[Kriteria 2: Mengintegrasikan Generative AI untuk Konten Fun Fact]
+
+Hasil deskripsi belum sesuai dengan objek yang diklasifikasikan oleh model TensorFlow.js. Pada beberapa pengujian, aplikasi menampilkan informasi yang tidak relevan atau kurang jelas dibandingkan dengan label hasil deteksi. Pastikan label yang dikirim ke fungsi Generative AI merupakan hasil klasifikasi terbaru dan dimasukkan secara jelas ke dalam prompt. Periksa juga pengaturan parameter seperti temperature dan top_p; nilai yang terlalu tinggi dapat membuat keluaran lebih acak dan menyimpang dari konteks. Gunakan prompt yang lebih spesifik agar model hanya menghasilkan fakta terkait sayuran yang terdeteksi. Transformers.js menyediakan pipeline untuk memproses input dan menghasilkan teks berdasarkan prompt yang diberikan. 
+
+Referensi: https://huggingface.co/docs/transformers.js/pipelines
