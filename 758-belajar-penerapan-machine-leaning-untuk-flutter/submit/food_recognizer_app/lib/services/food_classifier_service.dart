@@ -41,14 +41,33 @@ class FoodClassifierService {
   Interpreter? _interpreter;
   IsolateInterpreter? _isolateInterpreter;
   List<String> _labels = const [];
+  int _inputSize = AppConstants.modelInputSize;
 
   bool get isReady => _interpreter != null && _isolateInterpreter != null;
 
-  int get inputSize => AppConstants.modelInputSize;
+  /// Lebar/tinggi input yang sesungguhnya dipakai model, dibaca dari tensor
+  /// input model itu sendiri saat [loadModel] (bukan konstanta tebakan),
+  /// supaya penggantian model tidak lagi diam-diam salah resize.
+  int get inputSize => _inputSize;
 
   /// Memuat model + label dari assets bundel aplikasi.
   Future<void> loadModel() async {
-    final interpreter = await Interpreter.fromAsset(AppConstants.modelAssetPath);
+    late final Interpreter interpreter;
+    try {
+      interpreter = await Interpreter.fromAsset(AppConstants.modelAssetPath);
+    } catch (e) {
+      throw StateError(
+        'Gagal memuat model ML dari "${AppConstants.modelAssetPath}". '
+        'Pastikan berkas tersebut adalah model LiteRT/TensorFlow Lite (.tflite) yang valid, '
+        'bukan berkas kosong/placeholder. Detail: $e',
+      );
+    }
+
+    final inputShape = interpreter.getInputTensor(0).shape;
+    // Shape tensor input: [batch, height, width, channels].
+    if (inputShape.length >= 3) {
+      _inputSize = inputShape[1];
+    }
 
     _isolateInterpreter = await IsolateInterpreter.create(
       address: interpreter.address,
@@ -164,7 +183,13 @@ class FoodClassifierService {
 
   Object _emptyOutputBuffer(Tensor outputTensor) {
     final numClasses = outputTensor.shape.last;
-    return [List.filled(numClasses, 0.0)];
+    // Tipe elemen buffer output harus cocok dengan tipe tensor model
+    // (mis. uint8/int8 untuk model terkuantisasi), bukan selalu double,
+    // karena IsolateInterpreter menulis hasil sesuai tipe asli tensor.
+    if (outputTensor.type == TensorType.float32) {
+      return [List.filled(numClasses, 0.0)];
+    }
+    return [List.filled(numClasses, 0)];
   }
 
   List<double> _outputToProbabilities(Object outputBuffer, Tensor outputTensor) {

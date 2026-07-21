@@ -6,7 +6,7 @@ class AppConstants {
   // --- Model ML (LiteRT / TensorFlow Lite) ---
   static const String modelAssetPath = 'assets/ml/food_classifier.tflite';
   static const String labelsAssetPath = 'assets/ml/labels.txt';
-  static const int modelInputSize = 224; // 224 x 224 RGB sesuai spesifikasi model
+  static const int modelInputSize = 192; // 192 x 192 RGB sesuai spesifikasi model (MobilenetV1 food classifier)
   static const int modelChannels = 3;
 
   /// Prediksi dengan skor di bawah ambang ini dianggap terlalu tidak yakin
