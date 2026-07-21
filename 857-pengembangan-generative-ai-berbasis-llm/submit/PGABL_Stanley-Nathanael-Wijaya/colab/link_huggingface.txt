@@ -1,0 +1,2 @@
+Fine-tuned model: https://huggingface.co/xStyNWx/qwen2.5-1.5b-legal-chatbot-id
+GRPO model (opsional/advanced): https://huggingface.co/xStyNWx/qwen2.5-1.5b-legal-chatbot-id-grpo
