@@ -1,5 +1,1 @@
-TODO: isi dengan tautan repository GitHub Public untuk Kriteria 3, setelah
-folder "Workflow-CI" di-push sebagai repo baru.
-
-Contoh:
-https://github.com/StyNW7/Workflow-CI
+https://github.com/StyNW7/Dicoding_713_Workflow_CI

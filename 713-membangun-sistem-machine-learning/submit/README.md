@@ -9,7 +9,7 @@ SMSML_Stanley-Nathanael-Wijaya/
 ├── Eksperimen_SML_Stanley-Nathanael-Wijaya.txt   -> https://github.com/StyNW7/Dicoding_Eksperimen_SML_Stanley-Nathanael-Wijaya
 ├── Eksperimen_SML_Stanley-Nathanael-Wijaya/      -> isi repo Kriteria 1 (push terpisah)
 ├── Membangun_model/                              -> Kriteria 2
-├── Workflow-CI.txt                               -> tautan repo Kriteria 3
+├── Workflow-CI.txt                               -> https://github.com/StyNW7/Dicoding_713_Workflow_CI
 ├── Workflow-CI/                                  -> isi repo Kriteria 3 (push terpisah)
 └── Monitoring dan Logging/                       -> Kriteria 4
 ```

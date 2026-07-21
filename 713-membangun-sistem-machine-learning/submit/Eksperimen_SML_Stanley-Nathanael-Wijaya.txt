@@ -1,5 +1,1 @@
-TODO: isi dengan tautan repository GitHub Public untuk Kriteria 1, setelah
-folder "Eksperimen_SML_Stanley-Nathanael-Wijaya" di-push sebagai repo baru.
-
-Contoh:
-https://github.com/StyNW7/Eksperimen_SML_Stanley-Nathanael-Wijaya
+https://github.com/StyNW7/Dicoding_Eksperimen_SML_Stanley-Nathanael-Wijaya
